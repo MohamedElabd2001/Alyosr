@@ -2,12 +2,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 
 class EmailSender extends StatefulWidget {
   final String serviceName;
+  final String? carDetails;
+  final String? pickupDate; // Add pickupDate property
+  final String? dropOffDate;
 
-  EmailSender({required this.serviceName});
+
+  EmailSender({required this.serviceName, this.carDetails, this.pickupDate, this.dropOffDate});
 
   @override
   _EmailSenderState createState() => _EmailSenderState();
@@ -82,6 +87,27 @@ ${_bodyController.text}
   void initState() {
     super.initState();
     _subjectController.text = widget.serviceName;
+    _bodyController.text = _getBodyContent();
+  }
+
+  String _getBodyContent() {
+    String bodyContent = widget.carDetails ?? '';
+    String pickupDate = widget.pickupDate ?? '';
+    String dropOffDate = widget.dropOffDate ?? '';
+
+    // Format pickup and drop-off dates
+    if (pickupDate.isNotEmpty && dropOffDate.isNotEmpty) {
+      DateFormat formatter = DateFormat('dd-MM-yyyy'); // Specify your desired date format
+      DateTime pickupDateTime = DateTime.parse(pickupDate);
+      DateTime dropOffDateTime = DateTime.parse(dropOffDate);
+
+      pickupDate = formatter.format(pickupDateTime);
+      dropOffDate = formatter.format(dropOffDateTime);
+
+      bodyContent += '\n\nPickup Date: $pickupDate\nDrop-off Date: $dropOffDate';
+    }
+
+    return bodyContent;
   }
 
   String _truncateFileName(String fileName, int maxLength) {

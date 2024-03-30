@@ -7,6 +7,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'cars/car_list.dart';
+
 class home_page extends StatefulWidget {
   @override
   _home_pageState createState() => _home_pageState();
@@ -163,74 +165,99 @@ class _home_pageState extends State<home_page> {
                               width: 50,
                               child: Lottie.asset('assets/lottie/laww.json')))
                       : GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8.0,
-                            mainAxisSpacing: 8.0,
-                            childAspectRatio: 1.5,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                      childAspectRatio: 1.5,
+                    ),
+                    itemCount: categories.length + 3, // Increase by 1 for the new card
+                    itemBuilder: (context, index) {
+                      if (index == categories.length) {
+                        // Assuming you want to add it as the first item
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 3,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Ta2setScreen()),
+                                );
+                              },
+                              child: Center(
+                                child: Animate(
+                                  child: Text(
+                                    'قسط معانا',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ).animate().fade().scale(),
+                                ),
+                              ),
+                            ),
                           ),
-                          itemCount:
-                              categories.length + 2, // +1 for the ElevatedButton
-                          itemBuilder: (context, index) {
-                            if (index == categories.length) {
-                              // Assuming you want to add it as the first item
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Ta2setScreen()),
-                                      );
-                                    },
-                                    child: Center(
-                                      child: Animate(
-                                        child: Text(
-                                          'قسط معانا',
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold),
-                                        ).animate().fade().scale(),
-                                      ),
+                        );
+                      } else if (index == categories.length + 1) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 3,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => NewsScreen()),
+                                );
+                              },
+                              child: Center(
+                                child: Animate(
+                                  child: Text(
+                                    'أخبار',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  ).animate().fade().scale(),
                                 ),
-                              );
-                            } else if (index == categories.length + 1) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 3,
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => NewsScreen()),
-                                      );
-                                    },
-                                    child: Center(
-                                      child: Animate(
-                                        child: Text(
-                                          'أخبار',
-                                          style: TextStyle(
-                                              fontSize: 16.0,
-                                              fontWeight: FontWeight.bold),
-                                        ).animate().fade().scale(),
-                                      ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else if (index == categories.length + 2) {
+                        // This is the new card
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            elevation: 3,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => CarsListScreen()),
+                                );
+                              },
+                              child: Center(
+                                child: Animate(
+                                  child: Text(
+                                    'قائمة السيارات',
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  ).animate().fade().scale(),
                                 ),
-                              );
-                            } else {
-                              return CategoryTile(category: categories[index]);
-                            }
-                          },
-                        ),
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return CategoryTile(category: categories[index]);
+                      }
+                    },
+                  ),
                 ),],
             ),
 
